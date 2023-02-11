@@ -1,3 +1,7 @@
+@import './shared/styles/colors.scss';
+@import './shared/styles/config.scss';
+
+// Css reset
 html,
 body,
 div,
@@ -77,7 +81,8 @@ video {
 
 body {
   line-height: 1;
-  font-family: 'Roboto', sans-serif;
+  font-family: $base-font-family;
+  background-color: $primary-black;
 }
 
 article,

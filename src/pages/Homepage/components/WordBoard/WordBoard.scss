@@ -1,0 +1,8 @@
+@import '../../../../shared/styles/functions.scss';
+
+.word-board {
+  width: pxToEm(350);
+  height: pxToEm(400);
+  display: grid;
+  gap: 0.5em;
+}

@@ -1,0 +1,27 @@
+@import '../../styles/colors.scss';
+@import '../../styles/functions.scss';
+
+.word-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: pxToEm(1) solid $primary-grey;
+  border-radius: pxToEm(3);
+  font-size: 2rem;
+  font-weight: 500;
+  color: $primary-grey;
+}
+
+.word-box-transparent {
+  background-color: transparent;
+}
+
+.word-box-green {
+  background-color: $primary-green;
+  border: none;
+}
+
+.word-box-yellow {
+  background-color: $yellow;
+  border: none;
+}

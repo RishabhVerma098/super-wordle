@@ -1,5 +1,7 @@
+import Gameboard from 'pages/Homepage/containers/GameBoard/Gameboard';
+
 function App() {
-  return <h1>Hello World</h1>;
+  return <Gameboard />;
 }
 
 export default App;
