@@ -4,17 +4,21 @@ import { RegularExpressions } from 'core/constants/regex';
 import { EMPTY_STRING, KeyStrokes } from 'core/constants/strings';
 import { IBoxData } from 'core/models/box-data.interface';
 import { getBoxDataArray } from 'pages/Homepage/utils/wordboard.utils';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import WordBox from 'shared/components/WordBox/WordBox';
 
 type WordBoardPropsType = {
   wordLength: number;
   userTotalTries: number;
+  currentWord: string;
+  setNewCurrentWord: () => void;
 };
 
 export default function WordBoard({
   userTotalTries,
   wordLength,
+  currentWord,
+  setNewCurrentWord,
 }: WordBoardPropsType) {
   // Will hold main data array for the words, 2d matrix.
   const [boxDataArray, setBoxDataArray] = useState<IBoxData[][]>(
@@ -33,6 +37,9 @@ export default function WordBoard({
     []
   );
 
+  // Will store data that whether the game has ended or not.
+  const [gameEnded, setGameEnded] = useState<boolean>(false);
+
   /**
    * Will run when a key stroke happens,
    * Contains main game logic.
@@ -40,13 +47,6 @@ export default function WordBoard({
    * @param {KeyboardEvent} event: Key, code of the current key press.
    */
   const handleUserKeyPress = ({ code, key }: KeyboardEvent) => {
-    // TODO: What to do when game is complete ?
-    if (currentLineNumber === userTotalTries) {
-      // eslint-disable-next-line no-alert
-      alert('Game done');
-      return;
-    }
-
     // Runs when backspace key is pressed,
     // Expect it to clear a char in a word from right.
     if (code === KeyStrokes.BACKSPACE) {
@@ -65,7 +65,28 @@ export default function WordBoard({
 
     // Runs when enter key is pressed,
     // Expect it to go to next line when all the boxes in current line is filled.
+    // When call specific funtions for win or loss.
     if (code === KeyStrokes.ENTER && currentWordIndex === wordLength) {
+      const userEnteredWord = boxDataArray[currentLineNumber]
+        .map((box: IBoxData) => box.word)
+        .join(EMPTY_STRING);
+
+      // TODO: Handle game win and loss modal etc.
+      // Game end, User has won the game.
+      if (currentWord === userEnteredWord) {
+        // eslint-disable-next-line no-alert
+        alert('YOU HAVE WON');
+        setGameEnded(true);
+        return;
+      }
+
+      // Game end, User has lost the game.
+      if (currentLineNumber + 1 === userTotalTries) {
+        // eslint-disable-next-line no-alert
+        alert('Game Over you lost');
+        setGameEnded(true);
+      }
+
       setCurrentLineNumber((prev) => prev + 1);
       setCurrentWordIndex(0);
       return;
@@ -85,6 +106,26 @@ export default function WordBoard({
       setCurrentWordIndex((prev) => prev + 1);
     }
   };
+
+  /**
+   * Will reset the game board,
+   * All the state will be reset and new word would be calulated.
+   */
+  const resetGame = useCallback(() => {
+    setBoxDataArray(getBoxDataArray(userTotalTries, wordLength));
+    setCurrentLineNumber(0);
+    setCurrentWordIndex(0);
+    setGameEnded(false);
+    setNewCurrentWord();
+  }, [setNewCurrentWord, userTotalTries, wordLength]);
+
+  /**
+   * Will run when gameEnded boolean is changed,
+   * if the game has ended then call reset the game.
+   */
+  useEffect(() => {
+    if (gameEnded) resetGame();
+  }, [gameEnded, resetGame]);
 
   // Assign a reference to handleUserKeyPress.
   const handleUserKeyPressRef = useRef(handleUserKeyPress);
