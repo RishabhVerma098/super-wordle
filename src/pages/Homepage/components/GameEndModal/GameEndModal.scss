@@ -1,0 +1,10 @@
+@import '../../../../shared/styles/colors.scss';
+@import '../../../../shared/styles/functions.scss';
+
+.game-end-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2em;
+}

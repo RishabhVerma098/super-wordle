@@ -10,6 +10,7 @@ type PropsType = {
   userGuessTurn: number;
   listOfUserGuess: IWordList[];
   wordLength: number;
+  userError: boolean;
 };
 
 function WordBoardGrid({
@@ -17,6 +18,7 @@ function WordBoardGrid({
   userGuessTurn,
   listOfUserGuess,
   wordLength,
+  userError,
 }: PropsType) {
   return (
     <div className="word-board-grid">
@@ -29,6 +31,7 @@ function WordBoardGrid({
             wordLength={wordLength}
             key={wordList.id}
             currentGuess={userGuess}
+            userError={userError}
             word={[]}
           />
         ) : (
@@ -36,6 +39,7 @@ function WordBoardGrid({
             wordLength={wordLength}
             key={wordList.id}
             currentGuess={EMPTY_STRING}
+            userError={false}
             word={wordList.word}
           />
         );

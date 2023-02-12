@@ -1,12 +1,17 @@
 import './Gameboard.scss';
 
+import { Alert, Snackbar } from '@mui/material';
 import { GameConfig } from 'core/constants/config';
-import data from 'core/data/dictionary.json';
+import { EMPTY_STRING } from 'core/constants/strings';
 import useWordle from 'core/hooks/useWordle';
+import data from 'core/mocks/dictionary.json';
+import { IAlert } from 'core/models/alert.model';
 import { IDictonaryWord } from 'core/models/dictionary-word.model';
 import { randomIntFromInterval } from 'core/utils/common.util';
+import GameEndModal from 'pages/Homepage/components/GameEndModal/GameEndModal';
+import KeyBoard from 'pages/Homepage/components/Keyboard/KeyBoard';
 import WordBoardGrid from 'pages/Homepage/components/WordBoardGrid/WordBoardGrid';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 function Gameboard() {
   // Total word length (cols).
@@ -23,16 +28,37 @@ function Gameboard() {
     return dictonaryWords[randomIntFromInterval(0, dictonaryWords.length)].word;
   }, [dictonaryWords]);
 
+  // Will hold modal visibility.
+  const [showModal, setShowModal] = useState<boolean>(false);
+
+  // Will hold alert visibility.
+  const [showAlert, setShowAlert] = useState<IAlert>({
+    show: false,
+    message: EMPTY_STRING,
+  });
+
+  /**
+   * Will open or close alert.
+   *
+   * @param {boolean} show : true then alert will be shown
+   * @param {string} message : message in alert
+   * @returns
+   */
+  const handleShowAlert = (show: boolean, message: string) =>
+    setShowAlert({ show, message });
+
   // Get all the response of useWordle hook.
   const {
     userGuess,
     userGuessTurn,
     userVictory,
     listOfUserGuess,
+    usedKeys,
     handleUserKeyPress,
   } = useWordle({
     userTotalTries,
     wordLength,
+    handleShowAlert,
     dictionaryWord: currentWord,
   });
 
@@ -43,13 +69,9 @@ function Gameboard() {
   useEffect(() => {
     window.addEventListener('keyup', handleUserKeyPress);
 
-    // TODO: Add modal opening here.
-    if (userVictory) {
-      window.removeEventListener('keyup', handleUserKeyPress);
-    }
-
-    // TODO: Add modal opening here.
-    if (userGuessTurn > userTotalTries - 1) {
+    // User win or lose open game end modal.
+    if (userVictory || userGuessTurn > userTotalTries - 1) {
+      setTimeout(() => setShowModal(true), 1000);
       window.removeEventListener('keyup', handleUserKeyPress);
     }
 
@@ -58,12 +80,26 @@ function Gameboard() {
 
   return (
     <div className="homepage">
+      <h1>Super Wordle</h1>
       <WordBoardGrid
         userGuess={userGuess}
         userGuessTurn={userGuessTurn}
         listOfUserGuess={listOfUserGuess}
         wordLength={wordLength}
+        userError={showAlert.show}
       />
+      <KeyBoard usedKeys={usedKeys} />
+      {showModal && <GameEndModal win={userVictory} word={currentWord} />}
+      {showAlert.show && (
+        <Snackbar
+          open={showAlert.show}
+          autoHideDuration={2000}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          onClose={() => handleShowAlert(false, EMPTY_STRING)}
+        >
+          <Alert severity="info">{showAlert.message}</Alert>
+        </Snackbar>
+      )}
     </div>
   );
 }

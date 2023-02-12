@@ -1,0 +1,38 @@
+@import '../../../../shared/styles/colors.scss';
+@import '../../../../shared/styles/functions.scss';
+
+.keyboard {
+  max-width: pxToEm(600);
+  padding-top: pxToEm(50);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+.keyboard > div {
+  flex-basis: 50px;
+  height: 50px;
+  background: $primary-grey;
+  color: $primary-black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: pxToEm(5);
+  font-size: 1.5rem;
+}
+
+.keyboard > div.correct {
+  background: $primary-green;
+  color: $primary-black;
+}
+
+.keyboard > div.close {
+  background: $primary-yellow;
+  color: $primary-black;
+}
+
+.keyboard > div.wrong {
+  background: $secondary-grey;
+  color: $primary-black;
+}

@@ -47,6 +47,7 @@
     "import/no-duplicates": "error",
     "import/prefer-default-export": 0,
     "max-classes-per-file": 0,
-    "@typescript-eslint/no-inferrable-types": 0
+    "@typescript-eslint/no-inferrable-types": 0,
+    "react/require-default-props": 0
   }
 }

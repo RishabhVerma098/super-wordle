@@ -1,6 +1,7 @@
 import { RegularExpressions } from 'core/constants/regex';
-import { EMPTY_STRING, KeyStrokes } from 'core/constants/strings';
+import { EMPTY_STRING, KeyStrokes, UserError } from 'core/constants/strings';
 import { ILetterData, LetterStateType } from 'core/models/letter-data.model';
+import { UsedKeyType } from 'core/models/used-key.model';
 import { IWordList } from 'core/models/word-list.model';
 import { getInitialData } from 'core/utils/wordle.util';
 import { useState } from 'react';
@@ -9,12 +10,14 @@ type PropsType = {
   userTotalTries: number;
   wordLength: number;
   dictionaryWord: string;
+  handleShowAlert: (show: boolean, message: string) => void;
 };
 
 const useWordle = ({
   userTotalTries,
   wordLength,
   dictionaryWord,
+  handleShowAlert,
 }: PropsType) => {
   // Will hold user guess like "blame" or "bird" or "b" etc.
   const [userGuess, setUserGuess] = useState<string>(EMPTY_STRING);
@@ -32,6 +35,10 @@ const useWordle = ({
   const [listOfUserGuess, setlistOfUserGuess] = useState<IWordList[]>(
     getInitialData(userTotalTries, wordLength)
   );
+
+  // Keeps track of the used key with there state.
+  // format: {a: 'grey', b: 'green', c: 'yellow'} etc
+  const [usedKeys, setUsedKeys] = useState<UsedKeyType>({});
 
   /**
    * Will set user guess when a-z keys are pressed.
@@ -95,20 +102,41 @@ const useWordle = ({
     if (userGuessTurn === userTotalTries) return;
 
     // If user entered word less than required.
-    if (userGuess.length < wordLength) return;
+    if (userGuess.length < wordLength) {
+      handleShowAlert(true, UserError.WORD_LENGTH);
+      return;
+    }
 
     // If user entered word which he previously tried.
-    if (guessedWordsHistory.includes(userGuess)) return;
+    if (guessedWordsHistory.includes(userGuess)) {
+      handleShowAlert(true, UserError.WORD_ALREADY_PRESENT);
+      return;
+    }
 
-    // Update states.
+    const formattedword: ILetterData[] = getFormattedGuess();
+
+    // Update user guesses.
     setlistOfUserGuess((prevGuesses: IWordList[]) => {
       const newGuesses: IWordList[] = [...prevGuesses];
       newGuesses[userGuessTurn] = {
         ...newGuesses[userGuessTurn],
-        word: getFormattedGuess(),
+        word: formattedword,
       };
       return newGuesses;
     });
+
+    // Update used keys.
+    setUsedKeys((prev) => {
+      const prevKeys = { ...prev };
+
+      formattedword.forEach((letter: ILetterData) => {
+        prevKeys[letter.letter] = letter.state;
+        return letter;
+      });
+
+      return prevKeys;
+    });
+
     setGuessedWordsHistory((prev) => [...prev].concat(userGuess));
     setUserGuessTurn((prev) => prev + 1);
 
@@ -147,6 +175,7 @@ const useWordle = ({
     userGuessTurn,
     userVictory,
     listOfUserGuess,
+    usedKeys,
     handleUserKeyPress,
   };
 };

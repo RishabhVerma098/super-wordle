@@ -12,8 +12,8 @@
 .word-board-grid-guess-row > div {
   border: pxToEm(2) solid $primary-grey;
   border-radius: pxToEm(4);
-  width: pxToEm(30);
-  height: pxToEm(30);
+  width: pxToEm(35);
+  height: pxToEm(35);
   color: $primary-grey;
   font-size: 1.5rem;
   font-weight: 500;
@@ -38,8 +38,12 @@
   .wrong {
     --background: #{$secondary-grey};
     --border-color: #{$secondary-grey};
-    animation: flip 0.6s ease forwards;
+    animation: flip 0.5s ease forwards;
   }
+}
+
+.shake-row {
+  animation: shake 250ms ease-in-out;
 }
 
 @for $i from 2 through $guess-word-length {
@@ -65,6 +69,32 @@
   100% {
     transform: scale(1);
     border-color: $primary-grey;
+  }
+}
+
+@keyframes shake {
+  10% {
+    transform: translateX(-5%);
+  }
+
+  30% {
+    transform: translateX(5%);
+  }
+
+  50% {
+    transform: translateX(-7.5%);
+  }
+
+  70% {
+    transform: translateX(7.5%);
+  }
+
+  90% {
+    transform: translateX(-5%);
+  }
+
+  100% {
+    transform: translateX(0);
   }
 }
 

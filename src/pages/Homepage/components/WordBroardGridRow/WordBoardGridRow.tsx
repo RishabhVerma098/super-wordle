@@ -7,6 +7,7 @@ type WordBoardGridRowPropsType = {
   word: ILetterData[];
   currentGuess: string;
   wordLength: number;
+  userError: boolean;
 };
 
 type LetterListType = Omit<ILetterData, 'state'>;
@@ -15,6 +16,7 @@ function WordBoardGridRow({
   word,
   currentGuess,
   wordLength,
+  userError,
 }: WordBoardGridRowPropsType) {
   /**
    * Will return list of letter with ids,
@@ -36,7 +38,11 @@ function WordBoardGridRow({
   // If the currentGuess is defined (when user is adding letters to word).
   if (currentGuess) {
     return (
-      <div className="word-board-grid-guess-row">
+      <div
+        className={`word-board-grid-guess-row ${
+          userError ? 'shake-row' : EMPTY_STRING
+        }`}
+      >
         {getGuessLetterList().map((letter: LetterListType) => (
           <div
             key={letter.id}
