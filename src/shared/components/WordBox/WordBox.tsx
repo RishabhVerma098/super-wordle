@@ -2,9 +2,11 @@ import './WordBox.scss';
 
 import WordBoxClassNames from 'shared/constants/strings';
 
+export type WordBoxPropsStateType = 'invalid' | 'correct' | 'close' | 'wrong';
+
 export type WordBoxPropsType = {
   word: string;
-  state: 'invalid' | 'correct' | 'close';
+  state: WordBoxPropsStateType;
 };
 
 export default function WordBox({ word, state }: WordBoxPropsType) {
@@ -15,8 +17,8 @@ export default function WordBox({ word, state }: WordBoxPropsType) {
    */
   const getBoxColor = () => {
     switch (state) {
-      case 'invalid':
-        return WordBoxClassNames.TRANSPARENT;
+      case 'wrong':
+        return WordBoxClassNames.WRONG;
       case 'correct':
         return WordBoxClassNames.GREEN;
       case 'close':

@@ -5,7 +5,9 @@ import { EMPTY_STRING, KeyStrokes } from 'core/constants/strings';
 import { IBoxData } from 'core/models/box-data.interface';
 import { getBoxDataArray } from 'pages/Homepage/utils/wordboard.utils';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import WordBox from 'shared/components/WordBox/WordBox';
+import WordBox, {
+  WordBoxPropsStateType,
+} from 'shared/components/WordBox/WordBox';
 
 type WordBoardPropsType = {
   wordLength: number;
@@ -40,6 +42,27 @@ export default function WordBoard({
   // Will store data that whether the game has ended or not.
   const [gameEnded, setGameEnded] = useState<boolean>(false);
 
+  const getBoxState = (letter: string, pos: number): WordBoxPropsStateType => {
+    if (letter === currentWord[pos]) return 'correct';
+    if (currentWord.split(EMPTY_STRING).find((l: string) => l === letter))
+      return 'close';
+    return 'wrong';
+  };
+
+  const revealWord = () => {
+    const tempBoxDataArray = [...boxDataArray];
+    const userEnteredWord: IBoxData[] = tempBoxDataArray[currentLineNumber];
+
+    const updatedBoxDataLine: IBoxData[] = userEnteredWord.map(
+      (wordBoxData: IBoxData, index: number) => {
+        return { ...wordBoxData, state: getBoxState(wordBoxData.word, index) };
+      }
+    );
+
+    tempBoxDataArray[currentLineNumber] = updatedBoxDataLine;
+    setBoxDataArray(tempBoxDataArray);
+  };
+
   /**
    * Will run when a key stroke happens,
    * Contains main game logic.
@@ -67,6 +90,7 @@ export default function WordBoard({
     // Expect it to go to next line when all the boxes in current line is filled.
     // When call specific funtions for win or loss.
     if (code === KeyStrokes.ENTER && currentWordIndex === wordLength) {
+      revealWord();
       const userEnteredWord = boxDataArray[currentLineNumber]
         .map((box: IBoxData) => box.word)
         .join(EMPTY_STRING);
@@ -75,8 +99,9 @@ export default function WordBoard({
       // Game end, User has won the game.
       if (currentWord === userEnteredWord) {
         // eslint-disable-next-line no-alert
-        alert('YOU HAVE WON');
-        setGameEnded(true);
+        // alert('YOU HAVE WON');
+
+        // setGameEnded(true);
         return;
       }
 
@@ -159,24 +184,27 @@ export default function WordBoard({
   }, []);
 
   return (
-    <div
-      className="word-board"
-      style={{
-        gridTemplateRows: `repeat(${userTotalTries}, 1fr)`,
-        gridTemplateColumns: `repeat(${wordLength}, 1fr)`,
-      }}
-    >
-      {boxDataArray.map((boxData: IBoxData[]) =>
-        boxData.map((data: IBoxData) => {
-          return (
-            <WordBox
-              key={data.id}
-              word={data.word.toUpperCase()}
-              state={data.state}
-            />
-          );
-        })
-      )}
-    </div>
+    <>
+      <h2 style={{ color: 'wheat' }}>{currentWord}</h2>
+      <div
+        className="word-board"
+        style={{
+          gridTemplateRows: `repeat(${userTotalTries}, 1fr)`,
+          gridTemplateColumns: `repeat(${wordLength}, 1fr)`,
+        }}
+      >
+        {boxDataArray.map((boxData: IBoxData[]) =>
+          boxData.map((data: IBoxData) => {
+            return (
+              <WordBox
+                key={data.id}
+                word={data.word.toUpperCase()}
+                state={data.state}
+              />
+            );
+          })
+        )}
+      </div>
+    </>
   );
 }
