@@ -1,7 +1,7 @@
 import './GameEndModal.scss';
 
 import { Button } from '@mui/material';
-import Modal from 'shared/components/Modal/Modal';
+import Modal from '@shared/components/Modal/Modal';
 
 type PropsType = {
   win: boolean;

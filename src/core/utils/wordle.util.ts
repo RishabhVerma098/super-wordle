@@ -1,5 +1,5 @@
-import { EMPTY_STRING } from 'core/constants/strings';
-import { IWordList } from 'core/models/word-list.model';
+import { EMPTY_STRING } from '@core/constants/strings';
+import { IWordList } from '@core/models/word-list.model';
 
 /**
  * Will return instal 2D type word list.

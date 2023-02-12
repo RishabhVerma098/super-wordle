@@ -1,7 +1,7 @@
 import './WordBoardGridRow.scss';
 
-import { EMPTY_STRING } from 'core/constants/strings';
-import { ILetterData } from 'core/models/letter-data.model';
+import { EMPTY_STRING } from '@core/constants/strings';
+import { ILetterData } from '@core/models/letter-data.model';
 
 type WordBoardGridRowPropsType = {
   word: ILetterData[];

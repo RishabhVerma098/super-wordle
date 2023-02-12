@@ -1,16 +1,16 @@
 import './Gameboard.scss';
 
+import { GameConfig } from '@core/constants/config';
+import { EMPTY_STRING } from '@core/constants/strings';
+import useWordle from '@core/hooks/useWordle';
+import data from '@core/mocks/dictionary.json';
+import { IAlert } from '@core/models/alert.model';
+import { IDictonaryWord } from '@core/models/dictionary-word.model';
+import { randomIntFromInterval } from '@core/utils/common.util';
 import { Alert, Snackbar } from '@mui/material';
-import { GameConfig } from 'core/constants/config';
-import { EMPTY_STRING } from 'core/constants/strings';
-import useWordle from 'core/hooks/useWordle';
-import data from 'core/mocks/dictionary.json';
-import { IAlert } from 'core/models/alert.model';
-import { IDictonaryWord } from 'core/models/dictionary-word.model';
-import { randomIntFromInterval } from 'core/utils/common.util';
-import GameEndModal from 'pages/Homepage/components/GameEndModal/GameEndModal';
-import KeyBoard from 'pages/Homepage/components/Keyboard/KeyBoard';
-import WordBoardGrid from 'pages/Homepage/components/WordBoardGrid/WordBoardGrid';
+import GameEndModal from '@pages/Homepage/components/GameEndModal/GameEndModal';
+import KeyBoard from '@pages/Homepage/components/Keyboard/KeyBoard';
+import WordBoardGrid from '@pages/Homepage/components/WordBoardGrid/WordBoardGrid';
 import { useEffect, useMemo, useState } from 'react';
 
 function Gameboard() {

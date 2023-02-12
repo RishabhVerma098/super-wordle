@@ -1,9 +1,9 @@
-import { RegularExpressions } from 'core/constants/regex';
-import { EMPTY_STRING, KeyStrokes, UserError } from 'core/constants/strings';
-import { ILetterData, LetterStateType } from 'core/models/letter-data.model';
-import { UsedKeyType } from 'core/models/used-key.model';
-import { IWordList } from 'core/models/word-list.model';
-import { getInitialData } from 'core/utils/wordle.util';
+import { RegularExpressions } from '@core/constants/regex';
+import { EMPTY_STRING, KeyStrokes, UserError } from '@core/constants/strings';
+import { ILetterData, LetterStateType } from '@core/models/letter-data.model';
+import { UsedKeyType } from '@core/models/used-key.model';
+import { IWordList } from '@core/models/word-list.model';
+import { getInitialData } from '@core/utils/wordle.util';
 import { useState } from 'react';
 
 type PropsType = {

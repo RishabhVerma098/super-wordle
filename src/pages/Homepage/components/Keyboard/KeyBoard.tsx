@@ -1,7 +1,7 @@
 import './Keyboard.scss';
 
-import { keyboardkeys } from 'core/data/keyboard';
-import { UsedKeyType } from 'core/models/used-key.model';
+import { keyboardkeys } from '@core/data/keyboard';
+import { UsedKeyType } from '@core/models/used-key.model';
 
 type PropsType = {
   usedKeys: UsedKeyType;
