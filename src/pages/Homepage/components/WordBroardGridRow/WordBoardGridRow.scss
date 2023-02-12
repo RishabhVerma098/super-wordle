@@ -1,0 +1,93 @@
+@import '../../../../shared/styles/colors.scss';
+@import '../../../../shared/styles/functions.scss';
+@import '../../../../shared/styles/config.scss';
+
+.word-board-grid-row,
+.word-board-grid-guess-row {
+  display: flex;
+  gap: 0.5em;
+}
+
+.word-board-grid-row > div,
+.word-board-grid-guess-row > div {
+  border: pxToEm(2) solid $primary-grey;
+  border-radius: pxToEm(4);
+  width: pxToEm(30);
+  height: pxToEm(30);
+  color: $primary-grey;
+  font-size: 1.5rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.word-board-grid-row {
+  .correct {
+    --background: #{$primary-green};
+    --border-color: #{$primary-green};
+    animation: flip 0.5s ease forwards;
+  }
+
+  .close {
+    --background: #{$primary-yellow};
+    --border-color: #{$primary-yellow};
+    animation: flip 0.5s ease forwards;
+  }
+
+  .wrong {
+    --background: #{$secondary-grey};
+    --border-color: #{$secondary-grey};
+    animation: flip 0.6s ease forwards;
+  }
+}
+
+@for $i from 2 through $guess-word-length {
+  .word-board-grid-row > div:nth-child(#{$i}n) {
+    animation-delay: #{$i * 0.1}s;
+  }
+}
+
+.word-board-grid-guess-row {
+  .filled {
+    animation: bounce 0.2s ease-in-out forwards;
+  }
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(1);
+    border-color: $primary-white;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    border-color: $primary-grey;
+  }
+}
+
+@keyframes flip {
+  0% {
+    transform: rotateX(0);
+    background: transparent;
+    border-color: $primary-grey;
+  }
+  45% {
+    transform: rotateX(90deg);
+    background: $primary-grey;
+    border-color: $primary-grey;
+  }
+  55% {
+    transform: rotateX(90deg);
+    background: var(--background);
+    border-color: var(--border-color);
+  }
+  100% {
+    transform: rotateX(0);
+    background: var(--background);
+    border-color: var(--border-color);
+    color: $primary-black;
+  }
+}
