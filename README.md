@@ -1,12 +1,6 @@
-# BASE REACT PROJECT TEMPLATE
+# Project SUPER-WORDLE
 
-This is the base template for a "SPA React" project inclusive of the following dev configuration,
+## This a react clone of the game wordle.
 
-- Vite (React + Typescript + SW)
-- Scss (CSS Reset)
-- React Router V6
-- Eslint
-- Prettier
-- Husky
-- CommentLint
-- React Testing Library + JSdom + Jest-Dom + Vitest
+Note: Styles / Keyboard functionality and other features of wordle game are not implemented
+this is just the base game.
