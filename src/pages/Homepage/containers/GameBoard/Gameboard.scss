@@ -8,8 +8,19 @@
   align-items: center;
   overflow: hidden;
 
-  h1 {
+  &-header {
     color: $primary-grey;
     padding-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+
+    h3 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 }

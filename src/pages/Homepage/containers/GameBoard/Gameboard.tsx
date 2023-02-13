@@ -7,7 +7,8 @@ import data from '@core/mocks/dictionary.json';
 import { IAlert } from '@core/models/alert.model';
 import { IDictonaryWord } from '@core/models/dictionary-word.model';
 import { randomIntFromInterval } from '@core/utils/common.util';
-import { Alert, Snackbar } from '@mui/material';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import { Alert, IconButton, Snackbar } from '@mui/material';
 import GameEndModal from '@pages/Homepage/components/GameEndModal/GameEndModal';
 import KeyBoard from '@pages/Homepage/components/Keyboard/KeyBoard';
 import WordBoardGrid from '@pages/Homepage/components/WordBoardGrid/WordBoardGrid';
@@ -47,6 +48,11 @@ function Gameboard() {
   const handleShowAlert = (show: boolean, message: string) =>
     setShowAlert({ show, message });
 
+  /**
+   * Will open github link in new tab
+   */
+  const handleUrlClick = () => window.open(GameConfig.GITHUB_URL);
+
   // Get all the response of useWordle hook.
   const {
     userGuess,
@@ -80,7 +86,17 @@ function Gameboard() {
 
   return (
     <div className="homepage">
-      <h1>Super Wordle</h1>
+      <div className="homepage-header">
+        <h1>SUPER WORDLE</h1>
+        <h3>
+          Made by
+          <span>
+            <IconButton color="inherit" onClick={handleUrlClick}>
+              <GitHubIcon fontSize="small" />
+            </IconButton>
+          </span>
+        </h3>
+      </div>
       <WordBoardGrid
         userGuess={userGuess}
         userGuessTurn={userGuessTurn}
